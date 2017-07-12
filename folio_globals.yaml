@@ -1,6 +1,15 @@
+wibble: Hello
 refdata:
-  defaults: file:../default_cats
+  cfg: file:../default_cats/refdata_cfg.json
 environments:
+    development:
+        dataSource:
+            dbCreate: update
+            username: folio
+            password: folio
+            driverClassName: org.postgresql.Driver
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            url: jdbc:postgresql://localhost:5432/folio
     production:
         dataSource:
             dbCreate: update

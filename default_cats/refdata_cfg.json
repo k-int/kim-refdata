@@ -1,0 +1,11 @@
+{
+  "comments":"This key is not processed. include is not currentl used, categories should contain a map of default categories where the key is the shortcode and the value is a map of terms.
+              The map of terms can be a simple map of shortcode:defaultLabel or itself a map of shortcode to map of props for the term",
+  "include":[],
+  "categories": {
+    "GLOBAL_ROW_STATUS": {
+      "ACTIVE": "Active",
+      "DELETED": { "defaultLabel":"Deleted" }
+    }
+  }
+}

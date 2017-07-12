@@ -10,5 +10,10 @@ java -jar ./build/libs/kim-refdata-0.1.war --spring.config.location=file:../foli
 
 or you can run with grails run-app using
 
-grails -Dspring.config.location=file:../folio_globals.yaml run-app
+    THIS SEEMS NOT TO WORK AS EXPECTED::
+    grails -Dspring.config.location=file:../folio_globals.yaml run-app
+
+    BUT THIS IS OK::
+    SPRING_CONFIG_LOCATION="file:../folio_globals.yaml" grails run-app
+
 

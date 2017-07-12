@@ -1,11 +1,13 @@
 package kim.refdata
 
+import groovy.json.JsonSlurper
+
 class BootStrap {
 
   def grailsApplication
 
   def init = { servletContext ->
-    log.debug("kim-refdata::bootstrap::init");
+    log.debug("kim-refdata::bootstrap::init ${grailsApplication.config.wibble} ${System.getProperty("user.dir")}");
 
     // This app will look for a JSON file which defines the default set of global
     // refdata. This file is given as a URL, if none is supplied the app will attempt to
@@ -21,31 +23,44 @@ class BootStrap {
     //     }
     //   }
 
-    if ( grailsApplication.config.refdata?.defaults ) {
-      log.debug("Found a refdata config setting : ${grailsApplication.config.redfata?.defaults}");
-      java.net.URL config_url = new java.net.URL(grailsApplication.config.redfata?.defaults?.toString())
-      if ( "file".equals(config_url.getProtocol()) ) {
-        java.io.File config_file = new File(resourceUrl.toURI())
-        if ( config_file.exists() ) {
-          if ( config_file.isDirectory() ) {
-            log.debug("Passed a directory as config location");
-          }
-          else {
-            log.debug("Processing config file");
-          }
-        }
-        else {
-          log.warn("Unable to find config resource ${grailsApplication.config.redfata.defaults}. cwd: ${System.getProperty("user.dir")}");
-        }
-      }
-      else {
-        log.warn("This module currently only supports file:// protocol for refdata configuration");
-      }
+    if ( grailsApplication.config.refdata.cfg ) {
+      log.debug("Found a refdata config setting : ${grailsApplication.config.refdata?.cfg}");
+      loadRefdataConfig(grailsApplication.config.refdata?.cfg)
+    }
+    else {
+      log.debug("No defdata refdata cfg setting");
     }
 
 
   }
 
   def destroy = {
+  }
+
+  private def loadRefdataConfig(config_url_str) {
+    try {
+      java.net.URL config_url = new java.net.URL(config_url_str)
+      // config_url should be a json file, parse it using JsonSlurper
+      def config = new JsonSlurper().parse(config_url)
+      log.debug("Process config file");
+      config.categories.each { catShortcode, catValues ->
+        updateCategory(catShortcode,catValues);
+      }
+    }
+    catch ( Exception e ) {
+      log.error("problem processing refdata config file ${config_url_str}",e);
+    }
+  }
+
+  private def updateCategory(shortcode, values) {
+    log.debug("updateCategory(${shortcode},...)");
+    values.each { value_shortcode, value_definition ->
+      if ( value_definition instanceof Map ) {
+        log.debug("  Map defn : ${value_shortcode} -> ${value_definition.defaultLabel.toString()}")
+      }
+      else {
+        log.debug("  Simple defn : ${value_shortcode} -> ${value_definition.toString()}")
+      }
+    }
   }
 }
