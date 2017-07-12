@@ -57,9 +57,11 @@ class BootStrap {
     values.each { value_shortcode, value_definition ->
       if ( value_definition instanceof Map ) {
         log.debug("  Map defn : ${value_shortcode} -> ${value_definition.defaultLabel.toString()}")
+        // def rdv = RefdataValue.lookupOrCreateGlobal(shortcode, value_shortcode, value_definition.defaultLabel.toString());
       }
       else {
         log.debug("  Simple defn : ${value_shortcode} -> ${value_definition.toString()}")
+        // def rdv = RefdataValue.lookupOrCreateGlobal(shortcode, value_shortcode, value_definition.toString());
       }
     }
   }
