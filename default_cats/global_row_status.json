@@ -1,0 +1,6 @@
+{
+  "GLOBAL_ROW_STATUS": {
+    "ACTIVE": "Active",
+    "DELETED": { "defaultLabel":"Deleted" }
+  }
+}

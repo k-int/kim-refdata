@@ -1,0 +1,11 @@
+refdata:
+  defaults: file:../default_cats
+environments:
+    production:
+        dataSource:
+            dbCreate: update
+            username: folio
+            password: folio
+            driverClassName: org.postgresql.Driver
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            url: jdbc:postgresql://localhost:5432/folio
